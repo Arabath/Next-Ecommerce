@@ -26,7 +26,7 @@ export const CartProvider:FC = ({ children }) => {
 
     const [state, dispatch] = useReducer( cartReducer , CART_INITIAL_STATE );
 
-    // Efecto
+    // Efecto para manejo de cookies guardar selección carrito
     useEffect(() => {
         try {
             const cookieProducts = Cookie.get('cart') ? JSON.parse( Cookie.get('cart')! ): []
@@ -99,15 +99,18 @@ export const CartProvider:FC = ({ children }) => {
 
 
     return (
-        <CartContext.Provider value={{
-            ...state,
-
-            // Methods
-            addProductToCart,
-            removeCartProduct,
-            updateCartQuantity,
-        }}>
-            { children }
-        </CartContext.Provider>
+        <>
+        {/* @ts-expect-error Server Component */}
+            <CartContext.Provider value={{
+                ...state,
+                
+                // Methods
+                addProductToCart,
+                updateCartQuantity,
+                removeCartProduct,
+            }}>
+                { children }
+            </CartContext.Provider>
+        </>
     )
 };

@@ -1,5 +1,3 @@
-
-
 import { CartState } from './';
 import { ICartProduct } from '../../interfaces';
 
