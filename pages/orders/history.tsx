@@ -16,28 +16,28 @@ const columns: GridColDef[] = [
         headerName: 'Pagada',
         description: 'Muestra información si está pagada la orden o no',
         width: 200,
-        renderCell: (params: GridValueGetterParams) => {
-            return (
-                params.row.paid
-                    ? <Chip color="success" label="Pagada" variant='outlined' />
-                    : <Chip color="error" label="No pagada" variant='outlined' />
-            )
-        }
+        // renderCell: (params: GridValueGetterParams) => {
+        //     return (
+        //         params.row.paid
+        //             ? <Chip color="success" label="Pagada" variant='outlined' />
+        //             : <Chip color="error" label="No pagada" variant='outlined' />
+        //     )
+        // }
     },
     {
         field: 'orden',
         headerName: 'Ver orden',
         width: 200,
         sortable: false,
-        renderCell: (params: GridValueGetterParams) => {
-            return (
-               <NextLink href={`/orders/${ params.row.id }`} passHref>
-                    <Link underline='always'>
-                        Ver orden
-                    </Link>
-               </NextLink>
-            )
-        }
+        // renderCell: (params: GridValueGetterParams) => {
+        //     return (
+        //        <NextLink href={`/orders/${ params.row.id }`} passHref>
+        //             <Link underline='always'>
+        //                 Ver orden
+        //             </Link>
+        //        </NextLink>
+        //     )
+        // }
     }
 ];
 
