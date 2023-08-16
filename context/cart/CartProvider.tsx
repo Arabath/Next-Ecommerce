@@ -43,10 +43,13 @@ export const CartProvider:FC = ({ children }) => {
 
 
     useEffect(() => {
-        
+        //maneja datos de la Orden del Carrito
         const numberOfItems = state.cart.reduce( ( prev, current ) => current.quantity + prev , 0 );
+        console.log('numberOfItems', numberOfItems);
         const subTotal = state.cart.reduce( ( prev, current ) => (current.price * current.quantity) + prev, 0 );
+        console.log('subTotal', subTotal)
         const taxRate =  Number(process.env.NEXT_PUBLIC_TAX_RATE || 0);
+        console.log('taxRate', taxRate)
     
         const orderSummary = {
             numberOfItems,
@@ -54,37 +57,34 @@ export const CartProvider:FC = ({ children }) => {
             tax: subTotal * taxRate,
             total: subTotal * ( taxRate + 1 )
         }
-
+        console.log('orderSummary', orderSummary)
         dispatch({ type: '[Cart] - Update order summary', payload: orderSummary });
     }, [state.cart]);
 
 
 
     const addProductToCart = ( product: ICartProduct ) => {
-        //! Nivel 1
-        // dispatch({ type: '[Cart] - Add Product', payload: product });
 
-        //! Nivel 2
-        // const productsInCart = state.cart.filter( p => p._id !== product._id && p.size !== product.size );
-        // dispatch({ type: '[Cart] - Add Product', payload: [...productsInCart, product] })
-
-        //! Nivel Final
+        // Verificar si el producto ya está en el carrito
         const productInCart = state.cart.some( p => p._id === product._id );
+
+        // Agregar el producto al carrito si no está presente
         if ( !productInCart ) return dispatch({ type: '[Cart] - Update products in cart', payload: [...state.cart, product ] })
 
+        // Verificar si un producto con el mismo ID pero diferente tamaño ya está en el carrito
         const productInCartButDifferentSize = state.cart.some( p => p._id === product._id && p.size === product.size );
         if ( !productInCartButDifferentSize ) return dispatch({ type: '[Cart] - Update products in cart', payload: [...state.cart, product ] })
 
-        // Acumular
+        // Actualizar la cantidad si el producto ya está en el carrito y tiene el mismo ID y tamaño
         const updatedProducts = state.cart.map( p => {
             if ( p._id !== product._id ) return p;
             if ( p.size !== product.size ) return p;
 
-            // Actualizar la cantidad
+            // Actualizar la cantidad del producto existente en el carrito
             p.quantity += product.quantity;
             return p;
         });
-
+        // Actualizar los productos en el carrito con los cambios realizados
         dispatch({ type: '[Cart] - Update products in cart', payload: updatedProducts });
 
     }
@@ -100,7 +100,7 @@ export const CartProvider:FC = ({ children }) => {
 
     return (
         <>
-        {/* @ts-expect-error Server Component */}
+        @ts-expect-error Server Component
             <CartContext.Provider value={{
                 ...state,
                 
@@ -114,3 +114,17 @@ export const CartProvider:FC = ({ children }) => {
         </>
     )
 };
+
+
+
+
+
+// Parte de addProductToCart 
+
+        //! Nivel 1
+        // dispatch({ type: '[Cart] - Add Product', payload: product });
+
+        //! Nivel 2
+        // const productsInCart = state.cart.filter( p => p._id !== product._id && p.size !== product.size );
+        // dispatch({ type: '[Cart] - Add Product', payload: [...productsInCart, product] })
+
