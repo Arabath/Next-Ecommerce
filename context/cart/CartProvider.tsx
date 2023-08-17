@@ -115,10 +115,6 @@ export const CartProvider:FC = ({ children }) => {
     )
 };
 
-
-
-
-
 // Parte de addProductToCart 
 
         //! Nivel 1
